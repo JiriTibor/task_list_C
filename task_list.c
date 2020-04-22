@@ -6,39 +6,59 @@ void insert_into_file()
 {
   char task[100];
 
+  /*Opening file for write, creates file if file does not exist*/
   FILE *fp;
   fp = fopen("tasks.txt", "a+");
 
+  /*Scans and imports input from user*/
   scanf("%s", task);
   fprintf(fp, "%s\n", task);
 
   fclose(fp);
 }
 
+/*Function for counting lines of file*/
+int file_length()
+{
+  FILE *fp;
+  fp = fopen("tasks.txt", "r");
+
+  unsigned int number_of_lines = 0;
+  int ch;
+
+  /*Reads characters until EOF*/
+  while (EOF != (ch=getc(fp)))
+        if ('\n' == ch)
+            ++number_of_lines;
+
+  return number_of_lines;
+}
+
 /*Function for printing file*/
 void print_file()
 {
   char buff[255];
-  int x;
+  int x, lines;
 
+  /*Opening file for read*/
   FILE *fp;
-
   fp = fopen("tasks.txt", "r");
 
-  for (x = 0; x < 4; x++)
+  /*Prints whole file, line by line*/
+  lines = file_length();
+
+  for (x = 1; x <= lines; x++)
     {
     fgets(buff, 255, (FILE*)fp);
     printf("%s", buff);
     }
 }
 
+/*Main function*/
 int main()
 {
 
-  int x, y;
   char action;
-
-  y = 0;
 
   printf("Type 1 for adding a tasks\nType 2 for displaying tasks\nType 3 to end\n");
 
@@ -47,16 +67,19 @@ int main()
   {
     scanf("%c", &action);
 
+    /*Inserting into file*/
     if (action == '1')
     {
       insert_into_file();
     }
 
+    /*Printing file*/
     else if (action == '2')
     {
       print_file();
     }
 
+    /*Ending while loop*/
     else if (action == '3')
     {
       break;
