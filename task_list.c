@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 /*Function for counting lines of file*/
 int file_length()
@@ -45,6 +46,13 @@ void insert_into_file()
 {
   char task[100];
 
+  /*Gets local time*/
+  time_t rawtime;
+  struct tm * timeinfo;
+
+  time (&rawtime);
+  timeinfo = localtime (&rawtime);
+
   /*Opening file for write, creates file if file does not exist*/
   FILE *fp;
   fp = fopen("tasks.txt", "a+");
@@ -52,8 +60,10 @@ void insert_into_file()
   /*Scans and imports input from user*/
   printf("Enter name of the task: ");
   scanf("%s", task);
-  fprintf(fp, "%s\n", task);
-  printf("Task %s added\n",task);
+
+  /*Prints into file*/
+  fprintf(fp, "%s :%s", task,asctime(timeinfo));
+  printf("Task %s added :%s",task,asctime(timeinfo));
 
   fclose(fp);
 }
@@ -91,10 +101,11 @@ void delete_line()
     }
   }
 
-  /*Removes tasks.txt and renames buffer.txt to tasklist*/
+  /*Removes tasks.txt*/
   remove("tasks.txt");
   fclose(fp);
 
+  /*Renames buffer.txt to tasklist*/
   ret = rename("buffer.txt", "tasks.txt");
   if(ret == 0)
   {
