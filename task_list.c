@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <time.h>
 
+int task_number;
+
 /*Function for counting lines of file*/
 int file_length()
 {
@@ -62,8 +64,9 @@ void insert_into_file()
   scanf("%s", task);
 
   /*Prints into file*/
-  fprintf(fp, "%s :%s", task,asctime(timeinfo));
-  printf("Task %s added :%s",task,asctime(timeinfo));
+  fprintf(fp, "%i - %s:%s", task_number, task, asctime(timeinfo));
+  printf("Task %i - %s added %s",task_number,task, asctime(timeinfo));
+  task_number++;
 
   fclose(fp);
 }
@@ -89,13 +92,18 @@ void delete_line()
   printf("Enter name of the task: ");
   scanf("%s", task_name);
 
-  /*Inserts lines into new file without deleted task*/
   lines = file_length();
-  for (x = 0; x < lines-1; x++)
-  {
-    fgets(buff, 255, (FILE*)fp);
 
-    if ((strcmp(buff, task_name)) != 0)
+  /*Inserts lines into new file without deleted task*/
+  for (x = 0; x < lines; x++)
+  {
+    fgets(buff, 255, fp);
+
+    if (buff[0] == task_name[0])
+    {
+      ;
+    }
+    else
     {
       fprintf(fp2, "%s", buff);
     }
@@ -119,6 +127,7 @@ int main()
 {
 
   char action;
+  task_number = 1;
 
   printf("Type 1 for adding a tasks\nType 2 for displaying tasks\nType 3 to delete task\nType 4 to end this program\n");
 
