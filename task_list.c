@@ -46,7 +46,8 @@ void print_file()
 /*Function for inserting text into file*/
 void insert_into_file()
 {
-  char task[100];
+  char task[30];
+  char temp;
 
   /*Gets local time*/
   time_t rawtime;
@@ -61,11 +62,13 @@ void insert_into_file()
 
   /*Scans and imports input from user*/
   printf("Enter name of the task: ");
-  scanf("%s", task);
+  scanf("%c",&temp);
+  scanf("%[^\n]",task);
 
   /*Prints into file*/
-  fprintf(fp, "%i - %s:%s", task_number, task, asctime(timeinfo));
-  printf("Task %i - %s added %s",task_number,task, asctime(timeinfo));
+  fprintf(fp, "%i - %s: %s", task_number, task, asctime(timeinfo));
+  printf("Task %i - %s: %s",task_number, task, asctime(timeinfo));
+
   task_number++;
 
   fclose(fp);
